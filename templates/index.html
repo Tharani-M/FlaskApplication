@@ -1,0 +1,181 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sample Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #signingoption{
+            text-align: center;
+            padding-bottom: 10px;
+        }
+        .signbutton{
+            background-color: white;
+            text-align: center;
+            padding: 10px 20px;
+            font-weight: bold;
+            font-size: 15px;
+            color: black;
+
+        }
+        .form-container {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-container h2 {
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-signin {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-signin label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        .form-signin input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        .form-group input[type="submit"] {
+            width: 100%;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+        }
+        .form-signin input[type="submit"] {
+            width: 100%;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+        }
+        .form-group input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        .form-signin input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div id="signingoption">
+        <button class="signbutton" id="signin" type="button">Sign-in</button>
+        <button class="signbutton" id="signup" type="button">Sign-up</button>
+    </div>
+<div class="form-container">
+    <h2>Sign Up Form</h2>
+    <form action="/user" method="post" id="after-submit">
+        <div class="form-group">
+            <label for="first-name">First Name</label>
+            <input type="text" id="first-name" name="first_name" required>
+        </div>
+        <div class="form-group">
+            <label for="last-name">Last Name</label>
+            <input type="text" id="last-name" name="last_name" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <input type="radio" id="buyer" name="usertype" value="buyer" class="form-group">
+        <label class="form-group" for="buyer">Buyer</label>
+        <input class="form-group" type="radio" id="seller" name="usertype" value="seller">
+        <label class="form-group" for="seller">Seller</label><br><br>
+        <div class="form-group">
+            <input type="submit" value="Submit">
+        </div>
+        <p>Press sign-in button if you are already a user</p>
+    </form>
+    
+    <form id="signin" action="/email" method="get">
+        <h2 class="form-signin">Sign Up Form</h2>
+        <div class="form-signin">
+            <label for="email" class="form-signin">Email</label>
+            <input type="email" class="form-signin" id="email" name="email" required>
+        </div><br>
+        <!-- <div class="form-signin">
+            <label  class="form-signin" for="password">Password</label>
+            <input  class="form-signin" type="password" id="password" name="password" required>
+        </div>
+        <input type="radio" id="buyer" name="buyer" value="buyer" class="form-signin">
+        <label class="form-signin" for="buyer">Buyer</label>
+        <input class="form-signin" type="radio" id="seller" name="seller" value="seller">
+        <label class="form-signin" for="seller">Seller</label><br><br>-->
+        <div class="form-signin">
+            <input type="submit" value="Submit">
+        </div> 
+        </div>
+    </form>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded',function(){
+    document.getElementById('signup').click();
+});
+    document.getElementById('signin').addEventListener('click',function(){
+        hidesignup();
+        var show = document.getElementsByClassName('form-signin');
+        for(s of show){
+        s.style.display='block';
+    }
+    });
+    document.getElementById('signup').addEventListener('click',function(){
+        hidesignin();
+        var show = document.getElementsByClassName('form-group');
+        for(s of show){
+        s.style.display='block';
+    }
+        
+    });
+    function hidesignin(){
+        var hidetag = document.getElementsByClassName("form-signin")
+        for (h of hidetag)
+        {
+            h.style.display='none';
+        }
+    }
+    function hidesignup(){
+        var hidetag = document.getElementsByClassName('form-group')
+        for (h of hidetag)
+        {
+            h.style.display='none';
+        }
+    }
+</script>
+
+</body>
+</html>
