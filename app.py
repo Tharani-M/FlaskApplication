@@ -18,7 +18,8 @@ def getusers():
         request_data = request.get_json()
         
         user.append(request_data)
-        return user
+        for u in user:
+              return u
     
 @app.route('/<email>',methods=["GET","POST"])
 def postusers(email):
