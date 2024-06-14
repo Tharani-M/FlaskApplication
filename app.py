@@ -1,49 +1,66 @@
 from flask import Flask,render_template,request
+from flask import abort
 from markupsafe import escape
+from db import user,books
 
 app = Flask(__name__)
-user={"fname":'def_fname1',
-      'lname':'def_lname1',
-      'email': 'def_email1@gmail.com',
-      'phone_number':'12345565',
-      'password':'ks1',
-      'usertype':'seller'}
-#       {"fname":'def_fname2',
-#       'lname':'def_lname2',
-#       'email': 'def_email2@gmail.com',
-#       'phone_number':'12345565',
-#       'password':'ks2',
-#       'usertype':['seller','buyer']},
-#       {"fname":'def_fname3',
-#       'lname':'def_lname3',
-#       'email': 'def_email3',
-#       'phone_number':'12345565',
-#       'password':'ks3',
-#       'usertype':'seller'} 
-# ]
+
 
 @app.route('/')
-def getusers():
+def loginpage():
     return render_template('index.html')
 
 @app.route('/user',methods=["GET","POST"])
-def users():
+def getusers():
+    if request.method == "GET":
+         return user
     if request.method == "POST":
-        # user['fname']= request.form['first_name']
-        # user['lname'] = request.form['last_name']
-        # user['email'] = request.form['email']
-        # user['phone_number'] = request.form['phone']
-        # user['password']= request.form['password']
-        # user['usertype'] = request.form['usertype']
         request_data = request.get_json()
-        user['fname']=request_data['first_name']
-        user['lname'] = request_data['last_name']
-        user['email'] =request_data['email']
-        user['phone_number'] = request_data['phone']
-        user['password']= request_data['password']
-        user['usertype'] = request_data['usertype']
-        return render_template('loggedin.html',u= request_data)
+        
+        user.append(request_data)
+        return user
     
+@app.route('/<email>',methods=["GET","POST"])
+def postusers(email):
+     global user
+     req = request.get_json()
+     if request.method == "GET":
+          for u in user:
+               if u['email'] == email:
+               
+                    return u
+          else:
+               abort(404,message="Data is not available")
+     if request.method == "POST":
+          for u in user:
+               if u['email'] == email:
+                    u =  req
+                    user += req
+                    return u
+          else:
+               abort(404,message="Data is not available")
+
+@app.put('/<email>')
+def updateuser(email):
+    global user
+    req = request.get_json()
+    for u in user:
+               if u['email'] == email:
+                    u.update(req)                  
+                    return user
+    else:
+         abort(404,message="Data is not available")
+
+@app.delete('/<email>')
+def deluser(email):
+    global user
+    for u in user:
+               if u['email'] == email:                  
+                    user.remove(u)
+                    return user
+    else:
+               abort(404,"Data is not available") 
+        
 @app.route('/<string:email>')
 def getuser(email):
     # print(user)
@@ -51,5 +68,50 @@ def getuser(email):
     # for i in user:ö
     if user['email'] == email:
             return user['usertype']
+    
+# GET,POST,PUT,DELETE requests in books
+
+@app.route('/api/books',methods=['GET','POST'])
+def getsetbooks():
+      global books
+      if request.method == "GET":
+            return books
+      if request.method == "POST":
+            req_book = request.get_json()
+            books.append(req_book)
+            return books
+
+@app.route('/api/books/<int:book_id>',methods=['GET','POST'])
+def specificbooks(book_id):
+      global books
+      if request.method == 'GET':
+             for b in books:
+                   if b['book_id'] == book_id:
+                         return b
+      if request.method == 'POST':
+            req_book_up = request.get_json()
+            for b in books:
+               if b['book_id'] == book_id: 
+                        b.update(req_book_up)
+                        return  books
+
+@app.put('/api/books/<int:bookid>')
+def updatebookinfo(bookid):
+      global books
+      for b in books:
+               if b['book_id'] == bookid: 
+                     book_info_up = request.get_json()
+                     b.update(book_info_up)
+                     return  books
+
+@app.delete('/api/books/<int:bookid>')
+def deletebookinfo(bookid):
+      global books
+      for b in books:
+               if b['book_id'] == bookid: 
+                     books.remove(b)
+                     return  books
 
 
+    
+                      
